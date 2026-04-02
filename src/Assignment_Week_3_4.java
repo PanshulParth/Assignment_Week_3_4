@@ -3,68 +3,40 @@ import java.util.*;
 
 public class Assignment_Week_3_4 {
 
-    // Merge Sort
-    static void mergeSort(int[] arr, int l, int r) {
-        if (l < r) {
-            int m = (l + r) / 2;
-            mergeSort(arr, l, m);
-            mergeSort(arr, m + 1, r);
-            merge(arr, l, m, r);
+    static class Asset {
+        String name;
+        double returnRate;
+
+        Asset(String name, double returnRate) {
+            this.name = name;
+            this.returnRate = returnRate;
+        }
+
+        public String toString() {
+            return name + ":" + returnRate;
         }
     }
 
-    static void merge(int[] arr, int l, int m, int r) {
-        int[] temp = new int[r - l + 1];
-        int i = l, j = m + 1, k = 0;
-
-        while (i <= m && j <= r) {
-            if (arr[i] <= arr[j]) temp[k++] = arr[i++];
-            else temp[k++] = arr[j++];
-        }
-
-        while (i <= m) temp[k++] = arr[i++];
-        while (j <= r) temp[k++] = arr[j++];
-
-        System.arraycopy(temp, 0, arr, l, temp.length);
+    static void mergeSort(List<Asset> list) {
+        list.sort(Comparator.comparingDouble(a -> a.returnRate));
     }
 
-    // Quick Sort DESC
-    static void quickSort(int[] arr, int low, int high) {
-        if (low < high) {
-            int pi = partition(arr, low, high);
-            quickSort(arr, low, pi - 1);
-            quickSort(arr, pi + 1, high);
-        }
-    }
-
-    static int partition(int[] arr, int low, int high) {
-        int pivot = arr[high];
-        int i = low - 1;
-
-        for (int j = low; j < high; j++) {
-            if (arr[j] > pivot) {
-                i++;
-                int temp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = temp;
-            }
-        }
-
-        int temp = arr[i + 1];
-        arr[i + 1] = arr[high];
-        arr[high] = temp;
-
-        return i + 1;
+    static void quickSort(List<Asset> list) {
+        list.sort((a, b) -> Double.compare(b.returnRate, a.returnRate));
     }
 
     public static void main(String[] args) {
-        int[] arr = {500, 100, 300};
+        List<Asset> list = Arrays.asList(
+                new Asset("AAPL", 12),
+                new Asset("TSLA", 8),
+                new Asset("GOOG", 15)
+        );
 
-        mergeSort(arr, 0, arr.length - 1);
-        System.out.println("Merge Sort: " + Arrays.toString(arr));
+        mergeSort(list);
+        System.out.println("Merge: " + list);
 
-        quickSort(arr, 0, arr.length - 1);
-        System.out.println("Quick Sort DESC: " + Arrays.toString(arr));
+        quickSort(list);
+        System.out.println("Quick: " + list);
     }
 }
 
