@@ -1,42 +1,31 @@
 
-import java.util.*;
-
 public class Assignment_Week_3_4 {
 
-    static class Asset {
-        String name;
-        double returnRate;
-
-        Asset(String name, double returnRate) {
-            this.name = name;
-            this.returnRate = returnRate;
+    static int linearSearch(String[] arr, String target) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i].equals(target)) return i;
         }
-
-        public String toString() {
-            return name + ":" + returnRate;
-        }
+        return -1;
     }
 
-    static void mergeSort(List<Asset> list) {
-        list.sort(Comparator.comparingDouble(a -> a.returnRate));
-    }
+    static int binarySearch(String[] arr, String target) {
+        int l = 0, r = arr.length - 1;
 
-    static void quickSort(List<Asset> list) {
-        list.sort((a, b) -> Double.compare(b.returnRate, a.returnRate));
+        while (l <= r) {
+            int mid = (l + r) / 2;
+
+            if (arr[mid].equals(target)) return mid;
+            if (arr[mid].compareTo(target) < 0) l = mid + 1;
+            else r = mid - 1;
+        }
+        return -1;
     }
 
     public static void main(String[] args) {
-        List<Asset> list = Arrays.asList(
-                new Asset("AAPL", 12),
-                new Asset("TSLA", 8),
-                new Asset("GOOG", 15)
-        );
+        String[] arr = {"accA", "accB", "accC"};
 
-        mergeSort(list);
-        System.out.println("Merge: " + list);
-
-        quickSort(list);
-        System.out.println("Quick: " + list);
+        System.out.println("Linear: " + linearSearch(arr, "accB"));
+        System.out.println("Binary: " + binarySearch(arr, "accB"));
     }
 }
 
