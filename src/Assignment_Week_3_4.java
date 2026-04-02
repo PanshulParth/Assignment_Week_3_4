@@ -3,44 +3,40 @@ import java.util.*;
 
 public class Assignment_Week_3_4 {
 
-    static class Transaction {
-        String id;
-        double fee;
-        String timestamp;
+    static class Client {
+        String name;
+        int risk;
+        double balance;
 
-        Transaction(String id, double fee, String timestamp) {
-            this.id = id;
-            this.fee = fee;
-            this.timestamp = timestamp;
+        Client(String name, int risk, double balance) {
+            this.name = name;
+            this.risk = risk;
+            this.balance = balance;
         }
 
         public String toString() {
-            return id + ":" + fee + "@" + timestamp;
+            return name + ":" + risk;
         }
     }
 
-    // Bubble Sort (stable)
-    static void bubbleSort(List<Transaction> list) {
-        int n = list.size();
-        for (int i = 0; i < n - 1; i++) {
-            boolean swapped = false;
-            for (int j = 0; j < n - i - 1; j++) {
-                if (list.get(j).fee > list.get(j + 1).fee) {
+    // Bubble Sort ASC
+    static void bubbleSort(List<Client> list) {
+        for (int i = 0; i < list.size(); i++) {
+            for (int j = 0; j < list.size() - i - 1; j++) {
+                if (list.get(j).risk > list.get(j + 1).risk) {
                     Collections.swap(list, j, j + 1);
-                    swapped = true;
                 }
             }
-            if (!swapped) break;
         }
     }
 
-    // Insertion Sort (stable)
-    static void insertionSort(List<Transaction> list) {
+    // Insertion DESC
+    static void insertionSortDesc(List<Client> list) {
         for (int i = 1; i < list.size(); i++) {
-            Transaction key = list.get(i);
+            Client key = list.get(i);
             int j = i - 1;
 
-            while (j >= 0 && list.get(j).fee > key.fee) {
+            while (j >= 0 && list.get(j).risk < key.risk) {
                 list.set(j + 1, list.get(j));
                 j--;
             }
@@ -49,23 +45,21 @@ public class Assignment_Week_3_4 {
     }
 
     public static void main(String[] args) {
-        List<Transaction> list = new ArrayList<>();
+        List<Client> list = new ArrayList<>();
 
-        list.add(new Transaction("id1", 10.5, "10:00"));
-        list.add(new Transaction("id2", 25.0, "09:30"));
-        list.add(new Transaction("id3", 5.0, "10:15"));
-
-        System.out.println("Original: " + list);
+        list.add(new Client("C", 80, 1000));
+        list.add(new Client("A", 20, 2000));
+        list.add(new Client("B", 50, 1500));
 
         bubbleSort(list);
-        System.out.println("Bubble Sorted: " + list);
+        System.out.println("Bubble ASC: " + list);
 
-        insertionSort(list);
-        System.out.println("Insertion Sorted: " + list);
+        insertionSortDesc(list);
+        System.out.println("Insertion DESC: " + list);
 
-        System.out.println("High Fee (>50):");
-        for (Transaction t : list) {
-            if (t.fee > 50) System.out.println(t);
+        System.out.println("Top Clients:");
+        for (int i = 0; i < Math.min(3, list.size()); i++) {
+            System.out.println(list.get(i));
         }
     }
 }
