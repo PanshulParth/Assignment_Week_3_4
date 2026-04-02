@@ -3,64 +3,68 @@ import java.util.*;
 
 public class Assignment_Week_3_4 {
 
-    static class Client {
-        String name;
-        int risk;
-        double balance;
-
-        Client(String name, int risk, double balance) {
-            this.name = name;
-            this.risk = risk;
-            this.balance = balance;
-        }
-
-        public String toString() {
-            return name + ":" + risk;
+    // Merge Sort
+    static void mergeSort(int[] arr, int l, int r) {
+        if (l < r) {
+            int m = (l + r) / 2;
+            mergeSort(arr, l, m);
+            mergeSort(arr, m + 1, r);
+            merge(arr, l, m, r);
         }
     }
 
-    // Bubble Sort ASC
-    static void bubbleSort(List<Client> list) {
-        for (int i = 0; i < list.size(); i++) {
-            for (int j = 0; j < list.size() - i - 1; j++) {
-                if (list.get(j).risk > list.get(j + 1).risk) {
-                    Collections.swap(list, j, j + 1);
-                }
-            }
+    static void merge(int[] arr, int l, int m, int r) {
+        int[] temp = new int[r - l + 1];
+        int i = l, j = m + 1, k = 0;
+
+        while (i <= m && j <= r) {
+            if (arr[i] <= arr[j]) temp[k++] = arr[i++];
+            else temp[k++] = arr[j++];
+        }
+
+        while (i <= m) temp[k++] = arr[i++];
+        while (j <= r) temp[k++] = arr[j++];
+
+        System.arraycopy(temp, 0, arr, l, temp.length);
+    }
+
+    // Quick Sort DESC
+    static void quickSort(int[] arr, int low, int high) {
+        if (low < high) {
+            int pi = partition(arr, low, high);
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
         }
     }
 
-    // Insertion DESC
-    static void insertionSortDesc(List<Client> list) {
-        for (int i = 1; i < list.size(); i++) {
-            Client key = list.get(i);
-            int j = i - 1;
+    static int partition(int[] arr, int low, int high) {
+        int pivot = arr[high];
+        int i = low - 1;
 
-            while (j >= 0 && list.get(j).risk < key.risk) {
-                list.set(j + 1, list.get(j));
-                j--;
+        for (int j = low; j < high; j++) {
+            if (arr[j] > pivot) {
+                i++;
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
             }
-            list.set(j + 1, key);
         }
+
+        int temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+
+        return i + 1;
     }
 
     public static void main(String[] args) {
-        List<Client> list = new ArrayList<>();
+        int[] arr = {500, 100, 300};
 
-        list.add(new Client("C", 80, 1000));
-        list.add(new Client("A", 20, 2000));
-        list.add(new Client("B", 50, 1500));
+        mergeSort(arr, 0, arr.length - 1);
+        System.out.println("Merge Sort: " + Arrays.toString(arr));
 
-        bubbleSort(list);
-        System.out.println("Bubble ASC: " + list);
-
-        insertionSortDesc(list);
-        System.out.println("Insertion DESC: " + list);
-
-        System.out.println("Top Clients:");
-        for (int i = 0; i < Math.min(3, list.size()); i++) {
-            System.out.println(list.get(i));
-        }
+        quickSort(arr, 0, arr.length - 1);
+        System.out.println("Quick Sort DESC: " + Arrays.toString(arr));
     }
 }
 
